@@ -91,3 +91,19 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+## Para adicionar packages (novas dependências):
+1º Abrir o terminal na pasta da aplicação.
+2º Correr dotnet add package NomeDoPackage
+
+## Para correr a aplicação
+1º Abrir o terminal na pasta da aplicação.
+2º Correr dotnet build
+3ª Correr dotnet run
+4º Verificar no terminal o URL do localhost onde está a aplicação
+
+## Para adicionar Fonts novas
+1º Fazer download dos ficheiros .ttf
+2ª Colocar os ficheiros na pasta wwwroot/Fonts
+3º Ir a Models/PdfModel e, no método GerarPdf, na linha onde está a variável do tipo
+Xfont, adicionar o nome da nova Font e colocar que quer Bold, Italic, etc.

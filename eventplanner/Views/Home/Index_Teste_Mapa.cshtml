@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var title = "My Map Application"; // Replace with the actual title you need
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <!-- Leaflet CSS from CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+        /* Additional CSS styles if needed */
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>@title</h1>
+        <div id="map" style="height: 400px; width: 400px;"></div>
+    </div>
+
+    <!-- Leaflet JS from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        // Initialization of the map
+        function initializeMap() {
+            var map = L.map('map').setView([38.71822565261205, -9.152283020163248], 30);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18,
+            }).addTo(map);
+        }
+
+        // Call the function to initialize the map
+        initializeMap();
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+@model eventplanner.Models.PdfModel
+
+<h2>Coloca algo para colocar em PDF!</h2>
+<form method="post" action="/PDF/CriarPDF">
+    <div>
+        <label for="content">Enter Text:</label>
+        <input type="text" id="content" name="Content" value="@Model.Content" required />
+        <button type="submit">Create PDF</button>
+    </div>
+</form>
