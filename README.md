@@ -107,3 +107,4 @@ If you have run out of energy or time for your project, put a note at the top of
 2ª Colocar os ficheiros na pasta wwwroot/Fonts
 3º Ir a Models/PdfModel e, no método GerarPdf, na linha onde está a variável do tipo
 Xfont, adicionar o nome da nova Font e colocar que quer Bold, Italic, etc.
+4º Adicionar a font no .csproj

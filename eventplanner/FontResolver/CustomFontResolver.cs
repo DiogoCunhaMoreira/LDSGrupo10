@@ -29,7 +29,7 @@ public class CustomFontResolver : IFontResolver
         using (var stream = assembly.GetManifestResourceStream(resourcePath))
         {
             if (stream == null)
-                throw new FileNotFoundException($"Embedded font '{resourcePath}' not found.");
+                throw new FileNotFoundException($"Fonte '{resourcePath}' não encontrada.");
 
             byte[] data = new byte[stream.Length];
             stream.Read(data, 0, data.Length);

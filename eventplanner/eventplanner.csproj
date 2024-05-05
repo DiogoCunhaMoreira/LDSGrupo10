@@ -20,8 +20,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.17" />
     <PackageReference Include="PdfSharp" Version="6.0.0" />
-    <EmbeddedResource Include="wwwroot/Fonts/Sedan-Regular.ttf" />
-    <EmbeddedResource Include="wwwroot/Fonts/Sedan-Italic.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Regular.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Italic.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Bold.ttf" />
   </ItemGroup>
 
 </Project>

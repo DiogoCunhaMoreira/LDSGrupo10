@@ -5,16 +5,6 @@ using PdfSharp.Fonts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-public static void Main(string [] args)
-{
-    var host = CreateHostBuilder(args).Build();
-    {
-        BilheteController.AntesDaCompra += mensagem => Console.WriteLine($"Antes; {mensagem}");
-        BilheteController.AposCompra += mensagem => Console.WriteLine($"Após; {mensagem}");
-
-        host.Run();
-    }
-
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

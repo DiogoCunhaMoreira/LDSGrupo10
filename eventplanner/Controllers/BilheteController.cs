@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Mvc;
+using eventplanner.Models;
+
 public delegate void ProcessamentoCompraHandler(string mensagem);
 
 public class BilheteController : Controller
@@ -17,7 +20,7 @@ public class BilheteController : Controller
 
         try
         {
-            AntesDaCompra?.Invoke("A iniciar o processo de compra do bilhete. ")
+            AntesDaCompra?.Invoke("A iniciar o processo de compra do bilhete. ");
             // implementar a lógica para processar a compra do bilhete
             // Pverificar a disponibilidade do bilhete, calcular o preço, etc.
 
