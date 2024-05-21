@@ -1,28 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using eventplanner.Models;
 
-namespace eventplanner.Controllers;
-
-public class PDFController : Controller
+namespace eventplanner.Controllers
 {
-    public IActionResult Index()
+    public class PDFController : Controller
     {
-        return View(new PdfModel());
-    }
-
-    [HttpPost]
-    public ActionResult CriarPDF(PdfModel model)
-    {
-        if (ModelState.IsValid)
+        public IActionResult Index()
         {
-            var (pdfStream, errorMessage) = model.GerarPdf();
-            if (pdfStream != null)
-            {
-                return File(pdfStream.ToArray(), "application/pdf", "GeneratedTicket.pdf");
-            }
-            ModelState.AddModelError(string.Empty, errorMessage ?? "Erro desconhecido ao gerar o PDF.");
+            return View(new PdfModel());
         }
 
-        return View("Index", model);
+        [HttpPost]
+        public ActionResult CriarPDF(PdfModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                model.PdfGenerated += OnPdfGenerated;
+                model.GerarPdf();
+            }
+
+            return View("Index", model);
+        }
+
+        private void OnPdfGenerated(object sender, PdfGeneratedEventArgs e)
+        {
+            if (e.PdfStream != null)
+            {
+                Response.Headers.Add("Content-Disposition", "inline; filename=GeneratedTicket.pdf");
+                Response.ContentType = "application/pdf";
+                Response.Body.WriteAsync(e.PdfStream.ToArray(), 0, (int)e.PdfStream.Length).Wait();
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, e.ErrorMessage ?? "Erro desconhecido ao gerar o PDF.");
+            }
+        }
     }
 }
+
