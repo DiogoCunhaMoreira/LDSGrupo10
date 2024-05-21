@@ -4,8 +4,10 @@ using System.IO;
 
 namespace eventplanner.Models
 {
+    //Delegado definido 
     public delegate void PdfGeneratedHandler(object sender, PdfGeneratedEventArgs e);
 
+    // Criada uma "inner class" que contem os dados que são passados quando o evento é despoletado.
     public class PdfGeneratedEventArgs : EventArgs
     {
         public MemoryStream? PdfStream { get; }
@@ -20,6 +22,7 @@ namespace eventplanner.Models
 
     public class PdfModel
     {
+        // Declaração do evento
         public event PdfGeneratedHandler? PdfGenerated;
 
         public string? Nome { get; set; }
@@ -80,14 +83,17 @@ namespace eventplanner.Models
                 document.Save(stream, false);
                 stream.Position = 0;
 
+                // Despoletado o evento, caso não tenha havido erro, com os dados do PDF como argumento.
                 OnPdfGenerated(new PdfGeneratedEventArgs(stream, null));
             }
             catch (Exception ex)
             {
+                // Despoletado o evento, caso haja erro, com os detalhes do mesmo como argumento.
                 OnPdfGenerated(new PdfGeneratedEventArgs(null, $"Erro a gerar o PDF: {ex.Message}"));
             }
         }
 
+        //Método com a invocação do evento encapsulada para uso no código
         protected virtual void OnPdfGenerated(PdfGeneratedEventArgs e)
         {
             PdfGenerated?.Invoke(this, e);
