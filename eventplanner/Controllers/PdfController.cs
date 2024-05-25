@@ -1,25 +1,62 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using eventplanner.Models;
+using eventplanner.Interfaces;
+using System.IO;
 
 namespace eventplanner.Controllers
 {
     public class PDFController : Controller
     {
+        private readonly IPdfService _pdfService;
+
+        // Construtor com injeção das dependências de IPdfService e ITempDataService
+        public PDFController(IPdfService pdfService)
+        {
+            _pdfService = pdfService;
+        }
+
         public IActionResult Index()
         {
+            // Retorna uma nova instância de PdfModel para bind de dados do formulário
             return View(new PdfModel());
         }
 
         [HttpPost]
         public ActionResult CriarPDF(PdfModel model)
         {
+            Console.WriteLine("CriarPDF chamado.");
             if (ModelState.IsValid)
             {
-                // Subscrição ao evento para que o controller seja notificado quando o evento for despoletado pelo PdfModel.
-                model.PdfGenerated += OnPdfGenerated;
+                // Certifique-se de que o PdfModel injetado é utilizado
+                var pdfModel = _pdfService as PdfModel;
 
-                // É este método que vai despoletar um evento.
-                model.GerarPdf();
+                if (pdfModel != null)
+                {
+                    // Transferindo dados do model recebido para o model injetado
+                    pdfModel.Nome = model.Nome;
+                    pdfModel.Espetaculo = model.Espetaculo;
+                    pdfModel.Lugar = model.Lugar;
+                    pdfModel.FontName = model.FontName;
+
+                    // Assinando o evento no pdfModel injetado
+                    pdfModel.PdfGenerated += OnPdfGenerated;
+
+                    // Chamando o método para gerar PDF
+                    _pdfService.GerarPdf(pdfModel);
+
+                    MemoryStream pdfStream = new MemoryStream();
+                    // Verificação e retorno do PDF usando ITempDataService
+                    TempData["PdfStream"] = pdfStream;
+
+                    // Para recuperar e retornar o MemoryStream de TempData
+                    if (TempData["PdfStream"] is MemoryStream retrievedStream)
+                    {
+                        TempData.Remove("PdfStream"); // Limpar dados temporários após o uso
+
+                        retrievedStream.Position = 0;
+                        return File(retrievedStream, "application/pdf", "GeneratedTicket.pdf");
+                    }
+                }
             }
 
             return View("Index", model);
