@@ -16,12 +16,13 @@
             color: red;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="pdf-form card p-4">
             <h2 class="text-center">Gerar bilhete em PDF</h2>
-
+        <div class="error-list">
             @if (!ViewData.ModelState.IsValid)
             {
                 <ul class="error-list">
@@ -31,36 +32,142 @@
                     }
                 </ul>
             }
-
-            <form method="post" action="/PDF/CriarPDF">
+        </div>
+            <form id="mainForm" method="post" action="/PDF/CriarPDF" novalidate>
                 <div class="form-group">
                     <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="Nome" class="form-control" value="@Model.Nome" required />
+                    <input type="text" id="nome" name="Nome" class="form-control" value="@Model.Nome"/>
                 </div>
 
                 <div class="form-group">
                     <label for="espetaculo">Espetáculo:</label>
-                    <select id="espetaculo" name="Espetaculo" class="form-control" required>
+                    <select id="espetaculo" name="Espetaculo" class="form-control">
                         <option value="">Selecione um espetáculo</option>
-                        <option value="Show A">Show A</option>
-                        <option value="Show B">Show B</option>
-                        <option value="Show C">Show C</option>
+                        @{
+                            var espetaculos = new List<string> { "Show A", "Show B", "Show C" };
+                            foreach (var espetaculo in espetaculos)
+                            {
+                                <!option value="@espetaculo" @(Model.Espetaculo == espetaculo ? "selected" : "")>@espetaculo</!option>
+                            }
+                        }
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="lugar">Lugar:</label>
-                    <select id="lugar" name="Lugar" class="form-control" required>
+                    <select id="lugar" name="Lugar" class="form-control">
                         <option value="">Selecione um lugar</option>
-                        <option value="Lugar 1">Lugar 1</option>
-                        <option value="Lugar 2">Lugar 2</option>
-                        <option value="Lugar 3">Lugar 3</option>
+                        @{
+                            var lugares = new List<string> { "Lugar 1", "Lugar 2", "Lugar 3" };
+                            foreach (var lugar in lugares)
+                            {
+                                <!option value="@lugar" @(Model.Lugar == lugar ? "selected" : "")>@lugar</!option>
+                            }
+                        }
                     </select>
                 </div>
+
+                <input type="hidden" id="fontName" name="FontName" value="@Model.FontName" />
 
                 <button type="submit" class="btn btn-primary">Criar Bilhete PDF</button>
             </form>
         </div>
     </div>
+
+    <!-- Font Error Modal -->
+    <div class="modal fade" id="fontErrorModal" tabindex="-1" role="dialog" aria-labelledby="fontErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fontErrorModalLabel">Erro na fonte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@TempData["FontErrorMessage"]</p>
+                    <form id="fontSelectionForm" method="post" action="/PDF/CriarPDF">
+                        <div class="form-group">
+                            <label for="fontSelect">Selecione outra fonte:</label>
+                            <select id="fontSelect" class="form-control">
+                                <option value="Arial">Arial</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <!-- Add more fonts as needed -->
+                            </select>
+                        </div>
+                        <input type="hidden" id="hiddenNome" name="Nome" value="@TempData["Nome"]" />
+                        <input type="hidden" id="hiddenEspetaculo" name="Espetaculo" value="@TempData["Espetaculo"]" />
+                        <input type="hidden" id="hiddenLugar" name="Lugar" value="@TempData["Lugar"]" />
+                        <input type="hidden" id="hiddenFontName" name="FontName" value="@Model.FontName" />
+                        <button type="submit" class="btn btn-primary">Gerar novamente</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        $('#mainForm').on('submit', function (e) {
+            var errors = [];
+            var isValid = true;
+            var nome = $('#nome').val().trim();
+            var espetaculo = $('#espetaculo').val();
+            var lugar = $('#lugar').val();
+
+            console.log("nome: " + nome);
+            console.log("espetaculo: " + espetaculo);
+            console.log("lugar: " + lugar);
+
+            if (!nome) {
+                errors.push('Por favor, insira um nome válido.');
+                isValid = false;
+            }
+            if (!espetaculo) {
+                errors.push('Por favor, selecione um espetáculo.');
+                isValid = false;
+            }
+            if (!lugar) {
+                errors.push('Por favor, selecione um lugar.');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault(); // Impede o envio do formulário
+                var errorHtml = '<ul>';
+                errors.forEach(function (error) {
+                    errorHtml += '<li>' + error + '</li>';
+                });
+                errorHtml += '</ul>';
+                $('.error-list').html(errorHtml).show();
+            }
+        });
+
+        // Verificação de erros de fonte
+        var fontError = @Html.Raw(Json.Serialize(TempData["FontError"] ?? false));
+        var fontErrorMessage = '@TempData["FontErrorMessage"]';
+
+        if (fontError) {
+            $('#fontErrorModal').modal('show');
+            $('#hiddenNome').val('@TempData["Nome"]');
+            $('#hiddenEspetaculo').val('@TempData["Espetaculo"]');
+            $('#hiddenLugar').val('@TempData["Lugar"]');
+        }
+
+        $('#fontSelectionForm').on('submit', function (e) {
+            e.preventDefault(); // Previne o envio direto do formulário
+            var selectedFont = $('#fontSelect').val();
+            $('#fontName').val(selectedFont);
+            $('#hiddenNome').val($('#nome').val());
+            $('#hiddenEspetaculo').val($('#espetaculo').val());
+            $('#hiddenLugar').val($('#lugar').val());
+            $('#mainForm').submit();
+            $('#fontErrorModal').modal('hide');
+        });
+    });
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -24,10 +24,10 @@ namespace eventplanner.Models
     {
         // Declaração do evento
         public event PdfGeneratedHandler? PdfGenerated;
-
         public string? Nome { get; set; }
         public string? Espetaculo { get; set; }
         public string? Lugar { get; set; }
+        public string FontName { get; set; } = "Helvetica";
 
         public void GerarPdf()
         {
