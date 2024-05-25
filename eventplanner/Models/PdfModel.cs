@@ -1,4 +1,5 @@
-﻿using PdfSharp.Pdf;
+﻿
+using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.IO;
 
@@ -27,7 +28,7 @@ namespace eventplanner.Models
         public string? Nome { get; set; }
         public string? Espetaculo { get; set; }
         public string? Lugar { get; set; }
-        public string FontName { get; set; } = "Helvetica";
+        public string FontName { get; set; } = "Helvetic";
 
         public void GerarPdf()
         {
@@ -51,9 +52,9 @@ namespace eventplanner.Models
 
                 double yTextStart = yLogoPosition + logoHeight + 20;
 
-                XFont fontTitle = new XFont("Helvetica", 24, XFontStyleEx.Bold);
-                XFont fontLabelBold = new XFont("Helvetica", 20, XFontStyleEx.Bold);
-                XFont fontValueRegular = new XFont("Helvetica", 20, XFontStyleEx.Regular);
+                XFont fontTitle = new XFont(FontName, 24, XFontStyleEx.Bold);
+                XFont fontLabelBold = new XFont(FontName, 20, XFontStyleEx.Bold);
+                XFont fontValueRegular = new XFont(FontName, 20, XFontStyleEx.Regular);
 
                 string eventDate = "30-05-2024";
 
@@ -100,3 +101,5 @@ namespace eventplanner.Models
         }
     }
 }
+
+

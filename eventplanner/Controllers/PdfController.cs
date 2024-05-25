@@ -30,17 +30,19 @@ namespace eventplanner.Controllers
         //Caso haja erro, vai exibir o erro.
         private void OnPdfGenerated(object sender, PdfGeneratedEventArgs e)
         {
+            Console.WriteLine("OnPdfGenerated chamado.");
             if (e.PdfStream != null)
             {
-                Response.Headers.Add("Content-Disposition", "inline; filename=GeneratedTicket.pdf");
-                Response.ContentType = "application/pdf";
-
-                Response.Body.WriteAsync(e.PdfStream.ToArray(), 0, (int)e.PdfStream.Length).Wait();
+                // Armazenando o stream do PDF em TempData
+                TempData["PdfStream"] = e.PdfStream;
             }
             else
             {
-                ModelState.AddModelError(string.Empty, e.ErrorMessage ?? "Erro desconhecido ao gerar o PDF.");
+                // Armazenando a mensagem de erro e um indicador de erro em TempData
+                TempData["FontErrorMessage"] = e.ErrorMessage;
+                TempData["FontError"] = true;
             }
         }
     }
 }
+
