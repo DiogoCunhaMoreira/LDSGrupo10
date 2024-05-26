@@ -9,10 +9,13 @@ namespace eventplanner.Controllers
     {
         private readonly IPdfService _pdfService;
 
+        private readonly ITempDataService _tempDataService;
+
         // Construtor com injeção das dependências de IPdfService e ITempDataService
-        public PDFController(IPdfService pdfService)
+        public PDFController(IPdfService pdfService, ITempDataService tempDataService)
         {
             _pdfService = pdfService;
+            _tempDataService = tempDataService;
         }
 
         public IActionResult Index()
@@ -44,17 +47,12 @@ namespace eventplanner.Controllers
                     // Chamando o método para gerar PDF
                     _pdfService.GerarPdf(pdfModel);
 
-                    MemoryStream pdfStream = new MemoryStream();
                     // Verificação e retorno do PDF usando ITempDataService
-                    TempData["PdfStream"] = pdfStream;
-
-                    // Para recuperar e retornar o MemoryStream de TempData
-                    if (TempData["PdfStream"] is MemoryStream retrievedStream)
+                    var pdfStream = _tempDataService.Retrieve("PdfStream") as MemoryStream;
+                    if (pdfStream != null)
                     {
-                        TempData.Remove("PdfStream"); // Limpar dados temporários após o uso
-
-                        retrievedStream.Position = 0;
-                        return File(retrievedStream, "application/pdf", "GeneratedTicket.pdf");
+                        _tempDataService.Clear("PdfStream"); // Limpar dados temporários após o uso
+                        return File(pdfStream, "application/pdf", "GeneratedTicket.pdf");
                     }
                 }
             }
@@ -70,14 +68,12 @@ namespace eventplanner.Controllers
             Console.WriteLine("OnPdfGenerated chamado.");
             if (e.PdfStream != null)
             {
-                // Armazenando o stream do PDF em TempData
-                TempData["PdfStream"] = e.PdfStream;
+                _tempDataService.Store("PdfStream", e.PdfStream);
             }
             else
             {
-                // Armazenando a mensagem de erro e um indicador de erro em TempData
-                TempData["FontErrorMessage"] = e.ErrorMessage;
-                TempData["FontError"] = true;
+                _tempDataService.Store("FontErrorMessage", e.ErrorMessage);
+                _tempDataService.Store("FontError", true);
             }
         }
     }
