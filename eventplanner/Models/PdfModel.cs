@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using eventplanner.Interfaces;
 
+
+// essa classe é responsável por gerar um PDF com as informações de um bilhete de espetáculo
 namespace eventplanner.Models
 {
     public delegate void PdfGeneratedHandler(object sender, PdfGeneratedEventArgs e);
@@ -20,6 +22,7 @@ namespace eventplanner.Models
         }
     }
 
+    // Implementa a interface IPdfService e define propriedades para o nome do cliente, nome do espetáculo e lugar do espetáculo
     public class PdfModel : IPdfService
     {
         public string? Nome { get; set; }
@@ -29,18 +32,22 @@ namespace eventplanner.Models
 
         public event PdfGeneratedHandler? PdfGenerated;
 
+        // Método para gerar o PDF
         public void GerarPdf(IPdfService model)
         {
+            // Inicia a geração do PDF
             Console.WriteLine("Iniciando a geração do PDF...");
             try
             {
 
                 Console.WriteLine("Processando geração do PDF...");
 
+                // Cria um novo documento PDF
                 PdfDocument document = new PdfDocument();
                 PdfPage page = document.AddPage();
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
+                // Define o caminho do logo, dimensões e posição
                 string logoPath = "wwwroot/images/logo.png";
                 double logoWidth = 300;
                 double logoHeight = 300;
@@ -59,7 +66,7 @@ namespace eventplanner.Models
                 XFont fontLabelBold = new XFont(model.FontName, 20, XFontStyleEx.Bold);
                 XFont fontValueRegular = new XFont(model.FontName, 20, XFontStyleEx.Regular);
 
-                string eventDate = "30-05-2024"; // Example date
+                string eventDate = "30-05-2024"; // Exemplo de data do espetáculo
 
                 gfx.DrawString("Bilhete do Espetáculo", fontTitle, XBrushes.Black, new XRect(0, yTextStart, page.Width, page.Height), XStringFormats.TopCenter);
 
@@ -90,11 +97,13 @@ namespace eventplanner.Models
                 OnPdfGenerated(new PdfGeneratedEventArgs(stream, null));            }
             catch (Exception ex)
             {
+                // Em caso de erro, exibe uma mensagem de erro
                 Console.WriteLine($"Erro ao gerar PDF: {ex.Message}");
                 string errorMessage = "Error generating PDF: " + ex.Message;
                 OnPdfGenerated(new PdfGeneratedEventArgs(null, errorMessage));
             }
-        }       
+        }
+        // Método para chamar o evento de PDF gerado
         public virtual void OnPdfGenerated(PdfGeneratedEventArgs e)
         {
             PdfGenerated?.Invoke(this, e);

@@ -2,10 +2,13 @@ using PdfSharp.Fonts;
 using System.IO;
 using System.Reflection;
 
+
+// Implementação de um CustomFontResolver para uso de fontes personalizadas
 public class CustomFontResolver : IFontResolver
 {
     public string DefaultFontName => "Sedan";
 
+    // Método para resolver o tipo de fonte
     public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
     {
         string suffix = "";
@@ -16,12 +19,13 @@ public class CustomFontResolver : IFontResolver
         else
             suffix += "Regular";
 
-        // The font name matched with the embedded resource name
+        // esta fonte coicinde com o nome do arquivo da fonte
         string fontName = $"{familyName}-{suffix}.ttf";
 
         return new FontResolverInfo(fontName);
     }
 
+    // Método para obter a fonte
     public byte[] GetFont(string faceName)
     {
         var assembly = Assembly.GetExecutingAssembly();

@@ -10,8 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IPdfService, PdfModel>();
 builder.Services.AddScoped<ITempDataService, TempDataService>();
+builder.Services.AddHttpContextAccessor();
+
+
 
 // Add services to the container.
+builder.Services.AddRazorPages();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -19,6 +23,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 GlobalFontSettings.FontResolver = new CustomFontResolver();
 
@@ -29,6 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
@@ -41,10 +47,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=PDF}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();
-

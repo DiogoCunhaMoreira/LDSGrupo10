@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using eventplanner.Interfaces;
 
+
+// Implementação de um serviço para manipulação de TempData
 namespace eventplanner.Controllers
 {
     public class TempDataService : ITempDataService

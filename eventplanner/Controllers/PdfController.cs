@@ -3,6 +3,8 @@ using eventplanner.Models;
 using eventplanner.Interfaces;
 using System.IO;
 
+
+// Controller para gerar PDF
 namespace eventplanner.Controllers
 {
     public class PDFController : Controller
@@ -24,6 +26,7 @@ namespace eventplanner.Controllers
         }
 
         [HttpPost]
+        // Método para criar PDF
         public ActionResult CriarPDF(PdfModel model)
         {
             Console.WriteLine("CriarPDF chamado.");
@@ -59,6 +62,7 @@ namespace eventplanner.Controllers
             return View("Index", model);
         }
 
+        // Método para manipular o evento PdfGenerated
         private void OnPdfGenerated(object sender, PdfGeneratedEventArgs e)
         {
             Console.WriteLine("OnPdfGenerated chamado.");

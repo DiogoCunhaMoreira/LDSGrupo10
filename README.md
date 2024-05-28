@@ -1,5 +1,56 @@
 # EventPlanner
 
+EventPlanner é uma aplicação web que permite a organização de eventos. Esta aplicação permite a criação de eventos, a adição de tarefas e a adição de convidados.
+
+## Installation
+
+Para correr a aplicação é necessário ter o .Net Core SDK instalado. Caso não tenha, pode instalar o .Net Core SDK através do seguinte link: https://dotnet.microsoft.com/download
+
+## Usage
+
+Para correr a aplicação, basta abrir o terminal na pasta da aplicação e correr o seguinte comando:
+```bash
+dotnet run
+```
+
+## Contributing
+Pull requests são bem-vindos. Para grandes mudanças, por favor abra uma issue primeiro para discutir o que deseja alterar.
+
+Por favor, certifique-se de atualizar os testes conforme apropriado.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+# Welcome to your project!
+
+After you've created your project, it's time to get started. Here are a few things you can do to get going.
+
+## Add a license
+
+Licenses are important because they give others permission to use your code in various ways. To add a license to your project, the easiest way is to create a new file called `LICENSE` in the root of your repository. GitHub will recognize this and use it as the license for your project. You can also add a `LICENSE` file from the GitHub interface.
+
+## Write a README
+
+A README is a crucial way to communicate what your project is and how to use it. It's a good idea to at least include the following in your README:
+
+- What your project does
+- How to install it
+- How to use it
+- Any other information other users might need
+
+You can also include information on how to contribute to your project. If you're not sure what to include in your README, think about what you would want to know if you were using someone else's project.
+
+## Add a GitLab CI/CD configuration
+
+GitLab CI/CD is a powerful tool that lets you automate your workflow. You can create a `.gitlab-ci.yml` file in the root of your repository to define your CI/CD pipeline. You can use this file to define build, test, and deploy stages for your project.
+
+To get started, you can use one of the [GitLab CI/CD templates](https://docs.gitlab.com/ee/ci/templates/README.html) or create your own configuration from scratch.
+
+## Explore GitLab
+
+GitLab has a lot of features to help you manage your project. You can use issues to track bugs or feature requests, create a wiki to share information, or use merge requests to collaborate with others.
+
+You can also set up integrations with other tools, create a project website, or explore the [GitLab Marketplace](https://gitlab.com/explore) to find tools that can help you build your project.
+
 
 
 ## Getting started
