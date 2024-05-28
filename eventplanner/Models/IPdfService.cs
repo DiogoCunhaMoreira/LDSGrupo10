@@ -10,6 +10,14 @@ namespace eventplanner.Interfaces
 {
     public interface IPdfService
     {
-        void GerarPdf(PdfModel model);
+        string? Nome { get; set; }
+        string? Espetaculo { get; set; }
+        string? Lugar { get; set; }
+        string FontName { get; set; }
+
+        // Eventos
+        event PdfGeneratedHandler PdfGenerated;
+        void GerarPdf(IPdfService model);
+        void OnPdfGenerated(PdfGeneratedEventArgs e);
     }
 }

@@ -2,8 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using eventplanner.Data;
 using PdfSharp.Fonts; 
+using eventplanner.Interfaces;
+using eventplanner.Models;
+using eventplanner.Controllers;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IPdfService, PdfModel>();
+builder.Services.AddScoped<ITempDataService, TempDataService>();
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

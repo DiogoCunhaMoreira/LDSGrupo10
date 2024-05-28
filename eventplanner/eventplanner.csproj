@@ -23,6 +23,9 @@
     <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Regular.ttf" />
     <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Italic.ttf" />
     <EmbeddedResource Include="wwwroot/Fonts/Helvetica-Bold.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Roboto-Regular.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Roboto-Italic.ttf" />
+    <EmbeddedResource Include="wwwroot/Fonts/Roboto-Bold.ttf" />
   </ItemGroup>
 
 </Project>

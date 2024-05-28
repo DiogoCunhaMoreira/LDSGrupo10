@@ -29,7 +29,7 @@ namespace eventplanner.Models
 
         public event PdfGeneratedHandler? PdfGenerated;
 
-        public void GerarPdf(PdfModel model)
+        public void GerarPdf(IPdfService model)
         {
             Console.WriteLine("Iniciando a geração do PDF...");
             try
@@ -94,8 +94,8 @@ namespace eventplanner.Models
                 string errorMessage = "Error generating PDF: " + ex.Message;
                 OnPdfGenerated(new PdfGeneratedEventArgs(null, errorMessage));
             }
-        }
-        protected virtual void OnPdfGenerated(PdfGeneratedEventArgs e)
+        }       
+        public virtual void OnPdfGenerated(PdfGeneratedEventArgs e)
         {
             PdfGenerated?.Invoke(this, e);
         }

@@ -8,7 +8,6 @@ namespace eventplanner.Controllers
     public class PDFController : Controller
     {
         private readonly IPdfService _pdfService;
-
         private readonly ITempDataService _tempDataService;
 
         // Construtor com injeção das dependências de IPdfService e ITempDataService
@@ -31,21 +30,20 @@ namespace eventplanner.Controllers
             if (ModelState.IsValid)
             {
                 // Certifique-se de que o PdfModel injetado é utilizado
-                var pdfModel = _pdfService as PdfModel;
 
-                if (pdfModel != null)
+                if (_pdfService != null)
                 {
                     // Transferindo dados do model recebido para o model injetado
-                    pdfModel.Nome = model.Nome;
-                    pdfModel.Espetaculo = model.Espetaculo;
-                    pdfModel.Lugar = model.Lugar;
-                    pdfModel.FontName = model.FontName;
+                    _pdfService.Nome = model.Nome;
+                    _pdfService.Espetaculo = model.Espetaculo;
+                    _pdfService.Lugar = model.Lugar;
+                    _pdfService.FontName = model.FontName;
 
                     // Assinando o evento no pdfModel injetado
-                    pdfModel.PdfGenerated += OnPdfGenerated;
+                    _pdfService.PdfGenerated += OnPdfGenerated;
 
                     // Chamando o método para gerar PDF
-                    _pdfService.GerarPdf(pdfModel);
+                    _pdfService.GerarPdf(_pdfService);
 
                     // Verificação e retorno do PDF usando ITempDataService
                     var pdfStream = _tempDataService.Retrieve("PdfStream") as MemoryStream;
@@ -57,12 +55,10 @@ namespace eventplanner.Controllers
                 }
             }
 
+            // Se não houver PDF ou se algum erro ocorreu, retorne à view com o modelo original
             return View("Index", model);
         }
 
-        // Método que lida com os dados que vêm do evento. 
-        //Caso o PDF tenha sido gerado o método vai gerir a exibição do PDF ao utilizador.
-        //Caso haja erro, vai exibir o erro.
         private void OnPdfGenerated(object sender, PdfGeneratedEventArgs e)
         {
             Console.WriteLine("OnPdfGenerated chamado.");
@@ -78,4 +74,3 @@ namespace eventplanner.Controllers
         }
     }
 }
-

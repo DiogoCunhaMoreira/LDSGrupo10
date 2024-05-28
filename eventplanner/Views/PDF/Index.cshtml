@@ -90,7 +90,6 @@
                         <div class="form-group">
                             <label for="fontSelect">Selecione outra fonte:</label>
                             <select id="fontSelect" class="form-control">
-                                <option value="Arial">Arial</option>
                                 <option value="Roboto">Roboto</option>
                                 <option value="Helvetica">Helvetica</option>
                                 <!-- Add more fonts as needed -->
@@ -120,8 +119,13 @@
             console.log("espetaculo: " + espetaculo);
             console.log("lugar: " + lugar);
 
+            var regexNome = /^[a-zA-Z\s]+$/;
+
             if (!nome) {
                 errors.push('Por favor, insira um nome válido.');
+                isValid = false;
+            } else if (!regexNome.test(nome)) {
+                errors.push('O nome deve conter apenas letras.');
                 isValid = false;
             }
             if (!espetaculo) {
