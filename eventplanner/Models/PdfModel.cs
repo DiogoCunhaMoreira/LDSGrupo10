@@ -5,7 +5,7 @@ using System.IO;
 using eventplanner.Interfaces;
 
 
-// essa classe é responsável por gerar um PDF com as informações de um bilhete de espetáculo
+// esta classe é responsável por gerar um PDF com as informações de um bilhete de espetáculo
 namespace eventplanner.Models
 {
     public delegate void PdfGeneratedHandler(object sender, PdfGeneratedEventArgs e);
