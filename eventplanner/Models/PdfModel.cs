@@ -1,4 +1,6 @@
-﻿using PdfSharp.Pdf;
+﻿// file that contains the ITempDataService interface
+
+using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System;
 using System.IO;
@@ -66,7 +68,7 @@ namespace eventplanner.Models
                 XFont fontLabelBold = new XFont(model.FontName, 20, XFontStyleEx.Bold);
                 XFont fontValueRegular = new XFont(model.FontName, 20, XFontStyleEx.Regular);
 
-                string eventDate = "30-05-2024"; // Exemplo de data do espetáculo
+                string eventDate = "30-07-2024"; // Exemplo de data do espetáculo
 
                 gfx.DrawString("Bilhete do Espetáculo", fontTitle, XBrushes.Black, new XRect(0, yTextStart, page.Width, page.Height), XStringFormats.TopCenter);
 
